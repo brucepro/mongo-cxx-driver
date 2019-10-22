@@ -61,7 +61,7 @@ class transaction::impl {
         if (!rc) {
             return {};
         }
-        return {stdx::make_unique<read_concern::impl>(libmongoc::read_concern_copy(rc))};
+        return stdx::optional<class read_concern>({stdx::make_unique<read_concern::impl>(libmongoc::read_concern_copy(rc))});
     }
 
     void write_concern(const class write_concern& wc) {
@@ -74,7 +74,7 @@ class transaction::impl {
         if (!wc) {
             return {};
         }
-        return {stdx::make_unique<write_concern::impl>(libmongoc::write_concern_copy(wc))};
+        return stdx::optional<class write_concern>({stdx::make_unique<write_concern::impl>(libmongoc::write_concern_copy(wc))});
     }
 
     void read_preference(const class read_preference& rp) {
@@ -87,7 +87,7 @@ class transaction::impl {
         if (!rp) {
             return {};
         }
-        return {stdx::make_unique<read_preference::impl>(libmongoc::read_prefs_copy(rp))};
+        return stdx::optional<class read_preference>({stdx::make_unique<read_preference::impl>(libmongoc::read_prefs_copy(rp))});
     }
 
     mongoc_transaction_opt_t* get_transaction_opt_t() const noexcept {
